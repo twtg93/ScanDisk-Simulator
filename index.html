@@ -1,0 +1,363 @@
+<div class="screen">
+  <div class="screen-1">
+    <p class="title">Microsoft ScanDisk</p>
+    <hr>
+    <p>ScanDisk is now checking the following areas of drive C:</p>
+    <div class="list">
+      <span data-status></span> <span>Media descriptor</span>
+      <span data-status></span> <span>File allocation tables</span>
+      <span data-status></span> <span>Directory structure</span>
+      <span data-status></span> <span>File system</span>
+      <span data-status></span> <span>Free space</span>
+      <span data-status></span> <span>Surface scan</span>
+    </div>
+    <div class="button-panel">
+      <a href="#">Pause</a>
+      <a href="#">Exit</a>
+    </div>
+  </div>
+  <div class="screen-2 off">
+    <div class="surface-scan"></div>
+    <div class="drive-info">
+      <p>Drive C:</p>
+      <ul class="data">
+        <li class="total"><span></span> clusters</li>
+        <li class="examined"><span>0</span> examined</li>
+        <li class="badc"><span>0</span> found bad</li>
+      </ul>
+      <ul class="legend">
+        <li><span class="block unused"></span> = <var></var> clusters</li>
+        <li><span class="block unused"></span> unused clusters</li>
+        <li><span class="block used"></span> some used clusters</li>
+        <li><span class="block full"></span> used clusters</li>
+        <li><span class="block bad"></span> some bad clusters</li>
+      </ul>
+    </div>
+    <div class="buttons-dialog">
+      <a href="#">Exit</a>
+    </div>
+  </div>
+  <div class="screen-3 off">
+    <p class="title">Microsoft ScanDisk</p>
+    <hr>
+    <p>ScanDisk found and fixed <span></span> problems on drive C.</p>
+    <div class="button-panel">
+      <a href="#">Exit</a>
+    </div>
+  </div>
+  <hr>
+  <div class="status-bar">
+    <span data-count="0">% completed</span>
+    <div class="progressbar">
+      <div class="fillbar"></div>
+    </div>
+  </div>
+</div>
+<style>
+    @use postcss-nested;
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono');
+
+:root {
+  --blueColor: #0028aa;
+  --grayColor: #bcbdaa;
+  --darkgrayColor: #525252;
+  --cyanColor: #59ffff;
+  --yellowColor: #fffa51;
+  --emeraldColor: #184343;
+  --lightEmeraldColor: #38a6a6;
+  --redColor: #9c0b07;
+  --badTextColor: #fe6666;
+  --highlightTextColor: #ffffff;
+  --fontName: 'IBM Plex Mono', monospaced;
+  
+  font-family: var(--fontName);
+  font-size: 18px;
+}
+
+body {
+  background: var(--blueColor);  
+}
+
+.screen {
+  width: 800px;
+  margin: 3em auto;
+  color: var(--grayColor);
+  
+  .title {
+    color: var(--cyanColor);
+    margin-bottom: 0;
+  }
+  
+  & hr { border: 1px solid var(--cyanColor); }
+  & ul { margin-left: 2em; }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  margin-top: 2em;
+  margin-bottom: 4em;
+  
+  & span:nth-child(2n-1) {
+    text-align: center;
+    display: block;    
+  }
+    
+  & span[data-status="correct"]::before {
+    content: "♦";
+    color: var(--cyanColor);
+  }
+  
+  & span[data-status="current"]::before {
+    content: "»";
+    color: var(--cyanColor);
+  }
+  
+  & span[data-status="fixed"]::before {
+    content: "fixed";
+    color: var(--redColor);
+    font-weight: bold;
+  }
+}
+
+.button-panel {
+  margin-bottom: 1.5em;
+}
+
+a {
+  background: var(--darkgrayColor);
+  border: 0;
+  font-family: var(--fontName);
+  font-size: 1rem;
+  color: var(--grayColor);
+  outline: 0;
+  padding: 2px;
+  margin-right: 1em;
+  box-shadow: 10px 8px 0 black;
+  text-decoration: none;
+  
+  &:active {
+    color: var(--highlightColor);
+    position: relative;
+    left: 10px;
+    top: 8px;
+    box-shadow: none;
+  }
+  
+  &::before {
+    content: "⯇ ";
+    color: var(--highlightColor);
+  }
+  
+  &::after {
+    content: " ⯈";
+    color: var(--highlightColor);
+  }
+}
+
+.status-bar {
+  display: grid;
+  grid-template-columns: 1fr 600px;
+  
+  & span[data-count]::before {
+    content: attr(data-count);
+  }
+}
+
+.progressbar {
+  background: var(--darkgrayColor);
+
+  & .fillbar {
+    background: var(--yellowColor);
+    width: 0%;
+    height: 100%;
+  }
+}
+
+.screen-2 {
+  background: var(--grayColor);
+  color: black;
+  width: 93%;
+  min-height: 400px;
+  margin-bottom: 30px;
+  box-shadow: 10px 10px 0 black;
+  padding: 20px;
+  
+  display: grid;
+  grid-template-columns: 2fr 1.35fr;
+  grid-template-rows: 4fr 0.4fr;
+  
+  & ul {
+    list-style-type: none;
+    margin: 0 0 2em;
+    
+    &.data {
+      margin-right: 2em;
+      text-align: right;
+    }
+  }
+  
+  & .block::before {
+    width: 12px;
+    height: 22px;
+    text-align: center;
+    display: inline-block;
+  }
+  
+  & .unused::before {
+    content: "░";
+    background: var(--emeraldColor);
+    color: var(--lightEmeraldColor);
+  }
+  
+  & .used::before {
+    content: "▒";
+    background: var(--lightEmeraldColor);
+    color: black;
+  }
+  
+  & .full::before {
+    content: "•";
+    background: var(--cyanColor);
+    color: black;
+  }  
+  
+  & .bad::before {
+    content: "B";
+    background: black;
+    color: var(--badTextColor);
+  }
+  
+  & .read::before {
+    background: var(--yellowColor);
+  }  
+}
+
+.drive-info {
+  padding: 20px;
+}
+
+.buttons-dialog {
+  grid-row: 2;
+  grid-column: span 2;
+  text-align: center;
+}
+
+.screen-3 .button-panel {
+  margin-top: 8em;
+}
+
+.off {
+  display: none;
+}
+</style>
+<script>
+    const stages = document.querySelectorAll('.list span[data-status]');
+const progressbar = document.querySelector('.fillbar');
+const statusbar = document.querySelector('span[data-count]');
+
+const NUM_BLOCKS = 518;
+let currentStage = 0;
+
+// *** First screen (check disk)
+const random = (min = 1, max = 6) => min + ~~(Math.random() * max);
+
+// Every stage of first screen
+const nextStage = () => {
+  if (currentStage > 0) {
+    const randomFail = random(1, 6);
+    stages[currentStage - 1].dataset.status = (randomFail == 4 ? 'fixed' : 'correct');
+  }
+  
+  if (currentStage < stages.length) {
+    stages[currentStage++].dataset.status = 'current';
+    incProgress();
+    setTimeout(nextStage, random(500, 2000));
+  }
+  else
+    setTimeout(finishStage, random(500, 2000));
+}
+
+// last Stage from first screen
+const finishStage = () => {
+  const screen = document.querySelectorAll('.screen-1, .screen-2');
+  screen[0].classList.add('off');
+  screen[1].classList.remove('off');
+  setProgress(0);
+  blocks = document.querySelectorAll('.surface-scan .block');
+  readBlock();
+}
+
+// Progress bar update
+const setProgress = value => {
+  statusbar.dataset.count = value;
+  progressbar.style.width = `${value}%`;
+}
+
+const incProgress = (step = 15) => {
+  const value = Math.min(100, parseInt(statusbar.dataset.count) + step);
+  setProgress(value);
+}
+
+// *** Second screen (surface disk)
+const surface = document.querySelector('.surface-scan');
+const totalClusters = document.querySelector('.data .total span');
+const readClusters = document.querySelector('.data .examined span');
+const badClusters = document.querySelector('.data .badc span');
+const clustersPerBlock = document.querySelector('.legend var');
+const clusters = ~~(Math.random() * 100000) + 500000;
+const cpb = ~~(clusters / NUM_BLOCKS);
+
+let badclusters = 0;
+let currentBlock = 0;
+let blocks;
+
+const genSurface = () => {
+  totalClusters.textContent = clusters.toLocaleString();
+  clustersPerBlock.textContent = cpb.toLocaleString();
+  for (let i = 0; i < NUM_BLOCKS; i++) {
+    const span = document.createElement('span');
+    const type = ['unused', 'unused', 'unused', 'used', 'full'][~~(Math.random() * 5)];
+    span.className = `block ${type}`;
+    surface.appendChild(span);
+  }
+}
+
+const readBlock = () => {
+  let time = 0;
+  if (blocks[currentBlock].classList.contains('unused'))
+    time += random(0, 150);
+  if (blocks[currentBlock].classList.contains('used'))
+    time += random(50, 500);
+  if (blocks[currentBlock].classList.contains('full'))
+    time += random(50, 1000);
+  time += possibleBadBlock();
+  if (currentBlock < NUM_BLOCKS)
+    setTimeout(readBlock, time);
+  else
+    finishReadBlock();
+  setProgress(~~((currentBlock / NUM_BLOCKS) * 100));
+  readClusters.textContent = (currentBlock * cpb).toLocaleString();
+}
+
+const finishReadBlock = () => {
+  readClusters.textContent = clusters.toLocaleString();
+  document.querySelector('.screen-2').classList.add('off');
+  document.querySelector('.screen-3').classList.remove('off');
+}
+
+const possibleBadBlock = () => {
+  if (random(1, 150) == 1) {
+    blocks[currentBlock++].classList.add('bad');
+    badClusters.textContent = ++badclusters;
+    return random(2000, 4000);
+  }
+  else 
+    blocks[currentBlock++].classList.add('read');    
+  
+  return 0;
+}
+
+genSurface();
+nextStage();
+</script>
